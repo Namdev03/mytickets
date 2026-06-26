@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export default function TrailerSection() {
   const trailers = [
     {
@@ -23,10 +25,11 @@ export default function TrailerSection() {
     },
   ];
 
+  // Selected trailer
+  const [selectedTrailer, setSelectedTrailer] = useState(trailers[0]);
+
   return (
     <section className="w-full min-h-screen bg-black px-6 py-12 text-white">
-      
-      {/* Title */}
       <h1 className="text-3xl md:text-4xl font-bold text-center mb-10">
         🎬 Latest Trailers
       </h1>
@@ -36,14 +39,14 @@ export default function TrailerSection() {
         <div className="rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
           <iframe
             className="w-full h-[220px] sm:h-[320px] md:h-[420px]"
-            src={trailers[0].video}
-            title="Main Trailer"
+            src={selectedTrailer.video}
+            title={selectedTrailer.title}
             allowFullScreen
           ></iframe>
         </div>
 
         <h2 className="mt-4 text-xl font-semibold">
-          {trailers[0].title}
+          {selectedTrailer.title}
         </h2>
       </div>
 
@@ -52,7 +55,12 @@ export default function TrailerSection() {
         {trailers.map((t) => (
           <div
             key={t.id}
-            className="bg-zinc-900/60 border border-white/10 rounded-2xl overflow-hidden hover:scale-105 transition"
+            className={`bg-zinc-900/60 border rounded-2xl overflow-hidden cursor-pointer transition hover:scale-105 ${
+              selectedTrailer.id === t.id
+                ? "border-pink-500"
+                : "border-white/10"
+            }`}
+            onClick={() => setSelectedTrailer(t)}
           >
             <img
               src={t.thumbnail}
@@ -61,13 +69,16 @@ export default function TrailerSection() {
             />
 
             <div className="p-4">
-              <h3 className="font-medium text-white">{t.title}</h3>
+              <h3 className="font-medium">{t.title}</h3>
 
               <button
-                className="mt-3 w-full py-2 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm"
-                onClick={() => window.open(t.video.replace("embed/", "watch?v="))}
+                className="mt-3 w-full py-2 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent card click
+                  setSelectedTrailer(t);
+                }}
               >
-                Watch Trailer
+                Play Trailer
               </button>
             </div>
           </div>

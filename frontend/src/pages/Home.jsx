@@ -1,11 +1,12 @@
 import React from 'react'
 import HeroSection from '../components/HeroSection'
-import MovieSection from '../components/MovieSection'
-
+import TrailerSection from '../components/TrailerSection'
+import MovieCard from '../components/moviecard'
 export default function Home() {
   return (
    <>
   <HeroSection/>
- <MovieSection/>
+ <MovieCard/>
+ <TrailerSection/>
   </>
   )}
